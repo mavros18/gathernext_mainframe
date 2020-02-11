@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{% block title %}Mainframe{% endblock %}</title>
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap-flatly-3.3.7.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/font-awesome-4.6.3.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/font-lato.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/highlight-solarized-light.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap-tagsinput.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    {% endblock %}
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+
+<body id="{% block body_id %}{% endblock %}">
+
+{% block header %}
+    <header>
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+
+                    {# --- LOGO --- #}
+                    <a class="navbar-brand" href="{{ path('homepage') }}">
+                        Symfony Demo
+                    </a>
+
+                    <button type="button" class="navbar-toggle"
+                            data-toggle="collapse"
+                            data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle{#{{ 'menu.toggle_nav'|trans }}#}</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+
+                <div class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav navbar-right">
+                        {% block header_navigation_links %}
+                            <li>
+                                {#<a href="{{ path('blog_index') }}">#}
+                                <a href="/">
+                                    <i class="fa fa-home" aria-hidden="true"></i>
+                                    Homepage {#{{ 'menu.homepage'|trans }}#}
+                                </a>
+                            </li>
+
+                            <li>
+                                {#<a href="{{ path('blog_index') }}">#}
+                                <a href="/about">
+                                    <i class="fa fa-question" aria-hidden="true"></i>
+                                    About {#{{ 'menu.homepage'|trans }}#}
+                                </a>
+                            </li>
+
+                            <li>
+                                {#<a href="{{ path('blog_index') }}">#}
+                                <a href="/login">
+                                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                    Login {#{{ 'menu.homepage'|trans }}#}
+                                </a>
+                            </li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li>
+                                    {#<a href="{{ path('admin_post_index') }}">#}
+                                    <a href="/admin">
+                                        <i class="fa fa-lock" aria-hidden="true"></i> Admin {#{{ 'menu.admin'|trans }}#}
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if app.user %}
+                                <li>
+                                    {#<a href="{{ path('security_logout') }}">#}
+                                    <a href="/logout">
+                                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                        Logout{#{{ 'menu.logout'|trans }}#}
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-expanded="false" id="locales">
+                                    <i class="fa fa-globe" aria-hidden="true"></i>
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Choose Lang{#{{ 'menu.choose_language'|trans }}#}</span>
+                                </a>
+                                <ul class="dropdown-menu locales" role="menu" aria-labelledby="locales">
+                                    <li>
+                                        <a href="/en">
+                                            <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                            English{#{{ 'menu.logout'|trans }}#}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/el">
+                                            <i class="fa fa-flag" aria-hidden="true"></i>
+                                            Ελληνικά{#{{ 'menu.logout'|trans }}#}
+                                        </a>
+                                    </li>
+                                    {#{% for locale in locales() %}#}
+                                    {#<li {% if app.request.locale == locale.code %}aria-checked="true" class="active"{%else%}aria-checked="false"{% endif %} role="menuitem"><a href="{{ path(app.request.get('_route', 'blog_index'), app.request.get('_route_params', [])|merge({ _locale: locale.code })) }}">{{ locale.name|capitalize }}</a></li>#}
+                                    {#{% endfor %}#}
+                                </ul>
+                            </li>
+                        {% endblock %}
+                    </ul>
+
+                </div>
+
+
+            </div>
+
+        </div>
+        {#<div class="container">#}
+        {#<div class="navbar-header">#}
+        {#<div class="navbar-collapse collapse">#}
+
+        {#<ul class="nav navbar-subnav">#}
+        {#{% block header_subnav_links %}#}
+        {#{{ include('/base/base_header_subNavLinks.html.twig') }}#}
+        {#{% endblock %}#}
+        {#</ul>#}
+
+        {#</div>#}
+        {#</div>#}
+        {#</div>#}
+    </header>
+{% endblock %}
+
+<div class="container body-container">
+    {% block body %}
+        <div class="row">
+            <div id="main" class="col-sm-9">
+                {% block container %}
+
+                {% endblock %}
+            </div>
+
+            <div id="sidebar" class="col-sm-3">
+                {#{% block sidebar %}#}
+                {#{{ render_esi(controller('FrameworkBundle:Template:template', {#}
+                {#'template': 'default/sidebar.html.twig',#}
+                {#'sharedAge': 600,#}
+                {#'_locale': app.request.locale#}
+                {#})) }}#}
+                {#{% endblock %}#}
+            </div>
+        </div>
+    {% endblock %}
+</div>
+
+{% block footer %}
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div id="footer-copyright" class="col-md-6">
+                    <p>
+                        Symfony {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }} &copy; {{ 'now'|date('Y') }}
+                        | The Mainframe Project</p>
+
+                    <p>MIT Licence{#{{ 'mit_license'|trans }}#} | Locale: {#{{ locale }}#} </p>
+                </div>
+                <div id="footer-resources" class="col-md-6">
+                    <p>
+                        <a href="http://webmail.gathernext.com" title="GatherNext Webmail" target="_blank">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://twitter.com/symfony" title="Symfony Twitter" target="_blank">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://www.facebook.com/SensioLabs" title="SensioLabs Facebook" target="_blank">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://symfony.com/blog/" title="Symfony Blog">
+                            <i class="fa fa-rss" aria-hidden="true"></i>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery-2.2.4.min.js') }}"></script>
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-3.3.7.min.js') }}"></script>
+    <script src="{{ asset('js/highlight.pack.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+{% endblock %}
+
+{# it's not mandatory to set the timezone in localizeddate(). This is done to
+       avoid errors when the 'intl' PHP extension is not available and the application
+       is forced to use the limited "intl polyfill", which only supports UTC and GMT
+<!-- Page rendered on {{ 'now'|localizeddate('long', 'long', null, 'UTC') }} -->#}
+</body>
+</html>
